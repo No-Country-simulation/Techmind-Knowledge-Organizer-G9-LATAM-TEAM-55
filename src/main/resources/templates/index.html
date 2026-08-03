@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Diario Digital</title>
+
+    <!---
+    <link rel="stylesheet" th:href="@{/css.css}">
+    ---->
+    <link rel="stylesheet" href="/static/css.css">
+</head>
+<body>
+
+<h1>Crear publicación</h1>
+
+<form th:action="@{/contenido}" class="formulario" method="post">
+
+    <label>Título</label><br>
+    <input type="text" name="titulo"><br>
+
+    <label>Texto</label><br>
+    <textarea name="texto" rows="5"></textarea><br>
+
+    <button type="submit">Guardar</button>
+
+</form>
+
+<div class="resultado" th:if="${titulo != null}">
+
+    <h2 th:text="${titulo}"></h2>
+
+    <p th:text="${texto}"></p>
+
+
+
+    <h3>Categoria: </h3><p th:text="${categoria}"></p>
+
+    <h3>Confianza: %</h3><p th:text="${confianza}"></p>
+
+</div>
+
+</body>
+</html>
