@@ -11,7 +11,7 @@ import ftfy
 print("Cargando modelo de spaCy...")
 nlp = spacy.load("es_core_news_sm", disable=["parser", "ner"])
 
-RUTA_MODELO = "modelo_completo (2).joblib"
+RUTA_MODELO = "modelo_completo.joblib"
 print(f"Cargando pipeline entrenado desde '{RUTA_MODELO}'...")
 
 try:
