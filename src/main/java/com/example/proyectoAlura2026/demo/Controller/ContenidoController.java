@@ -2,12 +2,16 @@ package com.example.proyectoAlura2026.demo.Controller;
 
 import com.example.proyectoAlura2026.demo.Dto.RequestEnviar;
 import com.example.proyectoAlura2026.demo.Dto.ResponseContenido;
+import com.example.proyectoAlura2026.demo.Model.SistemaConsulta;
 import com.example.proyectoAlura2026.demo.Service.ConsultarMetadatos;
 import jakarta.validation.Valid;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api")
+import java.util.List;
+
+@Controller
 public class ContenidoController {
 
     private final ConsultarMetadatos consultarMetadatos;
@@ -16,8 +20,88 @@ public class ContenidoController {
         this.consultarMetadatos = consultarMetadatos;
     }
 
-    @PostMapping("/contenido")
-    public ResponseContenido procesarContenido(@Valid @RequestBody RequestEnviar request) {
-        return this.consultarMetadatos.obtenerDatosResponse(request.titulo(), request.texto());
+    @GetMapping("/")
+    public String inicio(Model model) {
+
+
+
+        model.addAttribute("consultas", consultarMetadatos.obtenerConsultas()
+        );
+        return "index";
     }
+
+
+    @PostMapping("/contenido")
+    public String procesarContenido(@Valid @RequestParam String titulo,
+                                    @RequestParam String texto, Model model) {
+
+        ResponseContenido respuesta =
+                consultarMetadatos.obtenerDatosResponse(titulo, texto);
+
+        model.addAttribute("titulo", titulo);
+        model.addAttribute("texto", texto);
+        model.addAttribute("categoria", respuesta.getCategoria());
+        model.addAttribute("confianza", respuesta.getConfianza());
+        // Si la categoría es desconocida
+        if ("Desconocida".equals(respuesta.getCategoria())) {
+
+            model.addAttribute(
+                    "categoriaDesconocida",
+                    true
+            );
+
+            model.addAttribute(
+                    "mensajeCategoria",
+                    "El contenido no pertenece a una categoría reconocida por el sistema."
+            );
+        }
+            else{
+                model.addAttribute(
+                        "categoriaDesconocida",
+                        false
+                );
+            }
+
+            model.addAttribute(
+                    "consultas",
+                    consultarMetadatos.obtenerConsultas()
+
+            );
+
+            return "index";
+        }
+
+
+    @PostMapping("/guardar")
+    public String guardarDatps(@RequestParam String titulo,
+                               @RequestParam String texto,
+                               @RequestParam String categoria,
+                               @RequestParam Float confianza) {
+
+        SistemaConsulta sistemaConsulta = new SistemaConsulta();
+
+        sistemaConsulta.setTitulo(titulo);
+        sistemaConsulta.setTexto(texto);
+        sistemaConsulta.setConfianza(confianza);
+        sistemaConsulta.setCategoria(categoria);
+
+        consultarMetadatos.guardarDatos(sistemaConsulta);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/consultas")
+    public String mostrarConsultas(Model model) {
+
+        List<SistemaConsulta> consultas =
+                consultarMetadatos.obtenerConsultas();
+
+        model.addAttribute("consultas", consultas);
+
+        return "redirect:/";
+    }
+
+
+
+
 }

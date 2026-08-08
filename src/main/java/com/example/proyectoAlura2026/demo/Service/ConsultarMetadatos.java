@@ -2,16 +2,23 @@ package com.example.proyectoAlura2026.demo.Service;
 
 import com.example.proyectoAlura2026.demo.Dto.RequestEnviar;
 import com.example.proyectoAlura2026.demo.Dto.ResponseContenido;
+import com.example.proyectoAlura2026.demo.Model.SistemaConsulta;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ConsultarMetadatos {
 
     private final RestTemplate restTemplate;
 
-    public ConsultarMetadatos(RestTemplate restTemplate) {
+    private final List<SistemaConsulta> consultas;
+
+    public ConsultarMetadatos(RestTemplate restTemplate, List<SistemaConsulta> consultas) {
         this.restTemplate = restTemplate;
+        this.consultas = consultas;
     }
 
     public ResponseContenido obtenerDatosResponse(String titulo, String texto){
@@ -23,11 +30,11 @@ public class ConsultarMetadatos {
 
         // Consulta servidor Python
         ResponseContenido contenido = this.restTemplate.postForObject(
-                "http://127.0.0.1:8000/predict", enviar,
+                "https://api-clasificador.onrender.com/predict", enviar,
                 ResponseContenido.class);
 
         // NIvel de confianza <20
-        if (contenido != null && contenido.getConfianza() < 0.20f) {
+        if (contenido != null && contenido.getConfianza() < 32f) {
             contenido.setCategoria("Desconocida");
         }
 
@@ -45,5 +52,14 @@ public class ConsultarMetadatos {
         textoLimpio = textoLimpio.replaceAll("[^a-záéíóúñ0-9\\s]", "");
         // Cambiar varios espacios por uno.
         return textoLimpio.replaceAll("\\s+", " ");
+    }
+
+
+    public void guardarDatos(SistemaConsulta consulta) {
+        consultas.add(consulta);
+    }
+
+    public List<SistemaConsulta> obtenerConsultas() {
+        return consultas;
     }
 }
