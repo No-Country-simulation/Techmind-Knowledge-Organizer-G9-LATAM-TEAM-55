@@ -1,6 +1,6 @@
 package com.example.proyectoAlura2026.demo.Dto;
 
-import java.util.List;
+
 
 public class ResponseContenido {
 

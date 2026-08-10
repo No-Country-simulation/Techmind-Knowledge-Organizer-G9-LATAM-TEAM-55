@@ -1,5 +1,8 @@
 package com.example.proyectoAlura2026.demo.Model;
 
+
+
+
 public class SistemaConsulta {
 
     private String categoria;  //
