@@ -12,7 +12,7 @@ class Contenido(BaseModel):
 @app.post("/predict")
 def predict(data: Contenido):
 
-    texto_limpio, categoria, confianza = predecir(
+    texto_limpio, categoria, confianza, palabras_clave = predecir(
         data.titulo,
         data.texto
     )
@@ -20,5 +20,7 @@ def predict(data: Contenido):
     return {
         "categoria": categoria,
         "confianza": confianza,
-        "texto_procesado": texto_limpio
+        "texto_procesado": texto_limpio,
+        "palabras_clave": palabras_clave
     }
+
