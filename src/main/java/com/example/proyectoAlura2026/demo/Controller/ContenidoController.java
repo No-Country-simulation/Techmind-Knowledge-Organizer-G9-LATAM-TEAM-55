@@ -42,6 +42,10 @@ public class ContenidoController {
         model.addAttribute("texto", texto);
         model.addAttribute("categoria", respuesta.getCategoria());
         model.addAttribute("confianza", respuesta.getConfianza());
+        model.addAttribute("palabras_clave", respuesta.getPalabras_clave());
+        System.out.println(respuesta.getPalabras_clave());
+
+
         // Si la categoría es desconocida
         if ("Desconocida".equals(respuesta.getCategoria())) {
 
@@ -73,10 +77,12 @@ public class ContenidoController {
 
 
     @PostMapping("/guardar")
-    public String guardarDatps(@RequestParam String titulo,
+    public String guardarDatos(@RequestParam String titulo,
                                @RequestParam String texto,
                                @RequestParam String categoria,
-                               @RequestParam Float confianza) {
+                               @RequestParam Float confianza,
+                               @RequestParam List<String> palabras_claves
+                                  ) {
 
         SistemaConsulta sistemaConsulta = new SistemaConsulta();
 
@@ -84,7 +90,7 @@ public class ContenidoController {
         sistemaConsulta.setTexto(texto);
         sistemaConsulta.setConfianza(confianza);
         sistemaConsulta.setCategoria(categoria);
-
+        sistemaConsulta.setPalabras_clave(palabras_claves);
         consultarMetadatos.guardarDatos(sistemaConsulta);
 
         return "redirect:/";

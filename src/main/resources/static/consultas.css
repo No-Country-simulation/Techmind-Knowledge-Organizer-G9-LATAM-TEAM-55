@@ -1,0 +1,55 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* =========================================
+   FONDO PRINCIPAL
+   ========================================= */
+
+body {
+    min-height: 100vh;
+
+    background:
+            radial-gradient(circle at top left,
+            rgba(255, 255, 255, 0.18),
+            transparent 35%),
+
+            radial-gradient(circle at bottom right,
+            rgba(255, 255, 255, 0.12),
+            transparent 35%),
+
+            linear-gradient(
+                    135deg,
+                    #667eea 0%,
+                    #764ba2 100%
+            );
+
+    color: #212529;
+}
+h1{
+    justify-self: anchor-center
+}
+
+   .card-salir {
+       display: flex;
+       font-size: 24px;
+       justify-content: center;
+
+       width: 69%;
+       color: white;
+       padding: 5px 29px;
+       border-radius: 20px;
+       transition: 1.3s;
+       justify-self: anchor-center;
+   }
+
+.card-salir:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(10px);
+    width: 34%;
+
+}

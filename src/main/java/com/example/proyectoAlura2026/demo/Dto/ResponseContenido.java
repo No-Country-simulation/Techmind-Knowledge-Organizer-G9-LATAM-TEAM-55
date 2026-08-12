@@ -1,11 +1,13 @@
 package com.example.proyectoAlura2026.demo.Dto;
 
 
+import java.util.List;
 
 public class ResponseContenido {
 
     private String categoria;  //
     private float confianza;
+    private List<String> palabras_clave;
 
 
 
@@ -25,9 +27,11 @@ public class ResponseContenido {
 
     }
 
-    public ResponseContenido(String categoria, float confianza) {
+
+    public ResponseContenido(String categoria, float confianza, List<String> palabras_clave) {
         this.categoria = categoria;
         this.confianza = confianza;
+        this.palabras_clave = palabras_clave;
     }
 
     public String getCategoria() {
@@ -44,5 +48,13 @@ public class ResponseContenido {
 
     public void setConfianza(float confianza) {
         this.confianza = confianza;
+    }
+
+    public List<String> getPalabras_clave() {
+        return palabras_clave;
+    }
+
+    public void setPalabras_clave(List<String> palabras_clave) {
+        this.palabras_clave = palabras_clave;
     }
 }

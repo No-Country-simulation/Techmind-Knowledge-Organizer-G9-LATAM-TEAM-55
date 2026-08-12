@@ -63,7 +63,7 @@
      id="resultadoModal"
      tabindex="-1"
      aria-hidden="true"
-     th:if="${categoria != null and !categoriaDesconocida}">>
+     th:if="${categoria != null and !categoriaDesconocida}">
 
     <div class="modal-dialog">
         <div class="modal-content">
@@ -81,8 +81,13 @@
                 <input type="hidden" name="titulo" th:value="${titulo}">
                 <input type="hidden" name="texto" th:value="${texto}">
                 <input type="hidden" name="categoria" th:value="${categoria}">
-
                 <input type="hidden" name="confianza" th:value="${confianza}">
+                <input type="hidden"
+                       name="palabras_claves"
+                       th:each="palabraClave : ${palabras_clave}"
+                       th:value="${palabraClave}">
+
+
             <div class="modal-body">
                 <h3 class="modal-title">Titulo:</h3>
                 <p th:text="${titulo}"></p>
@@ -96,6 +101,12 @@
                 <h3>Confianza:</h3>
                 <p th:text="${#numbers.formatDecimal(confianza, 1, 1)} + '%'"></p>
 
+                <h3>Palabras Claves: </h3>
+                <ul>
+                    <li th:each="palabraClave : ${palabras_clave}"
+                        th:text="${palabraClave}">
+                    </li>
+                </ul>
             </div>
 
             <div class="modal-footer">
@@ -116,8 +127,12 @@
 
 
 
-<div>
-
+<div class="consultas-container"> <a th:href="@{/consultar}" class="consultas-card text-decoration-none"> <div class="consultas-icono">
+    <span>📊</span> </div>
+    <div class="consultas-info">
+    <h3 >Mostrar datos relacionados</h3>
+    <p> Consulta las publicaciones guardadas, sus categorías y palabras clave. </p> </div> <div class="consultas-flecha"> → </div> </a>
+</div>
 
 
     <table class="table" th:if="${!#lists.isEmpty(consultas)}">
@@ -128,9 +143,9 @@
         <th>Texto</th>
         <th>Categoría</th>
         <th>Confianza</th>
+        <th>Palabras Claves</th>
     </tr>
     </thead>
-
 
 
 
@@ -140,6 +155,7 @@
         <td th:text="${consulta.texto}"></td>
         <td th:text="${consulta.categoria}"></td>
         <td th:text="${#numbers.formatDecimal(consulta.confianza, 1, 1)} + '%'"></td>
+        <td th:text="${#strings.listJoin(consulta.palabras_clave, ', ')}"></td>
     </tr>
     </tbody>
 
@@ -173,6 +189,6 @@
     const modal = new bootstrap.Modal(document.getElementById('resultadoModal'));
     modal.show();
 </script>
-
+    </div>
 </body>
 </html>
