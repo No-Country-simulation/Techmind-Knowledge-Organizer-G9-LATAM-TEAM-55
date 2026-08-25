@@ -134,8 +134,81 @@
     <p> Consulta las publicaciones guardadas, sus categorías y palabras clave. </p> </div> <div class="consultas-flecha"> → </div> </a>
 </div>
 
+<div class="container mt-4">
+
+    <h3>Filtrar consultas</h3>
+
+    <div class="d-flex align-items-center">
+
+        <!-- GRUPO DE FILTROS -->
+        <div class="btn-group"
+             role="group"
+             aria-label="Filtros de categoría">
+
+            <!-- FRONTEND -->
+            <input type="checkbox"
+                   class="btn-check"
+                   id="frontend"
+                   autocomplete="off"
+                   onchange="aplicarFiltro()">
+
+            <label class="btn btn-outline-primary" for="frontend">
+                💻 Frontend
+            </label>
+
+
+            <!-- BACKEND -->
+            <input type="checkbox"
+                   class="btn-check"
+                   id="backend"
+                   autocomplete="off"
+                   onchange="aplicarFiltro()">
+
+            <label class="btn btn-outline-success" for="backend">
+                ⚙️ Backend
+            </label>
+
+
+            <!-- DATA -->
+            <input type="checkbox"
+                   class="btn-check"
+                   id="data"
+                   autocomplete="off"
+                   onchange="aplicarFiltro()">
+
+            <label class="btn btn-outline-warning" for="data">
+                📊 Data
+            </label>
+
+
+            <!-- CLOUD -->
+            <input type="checkbox"
+                   class="btn-check"
+                   id="cloud"
+                   autocomplete="off"
+                   onchange="aplicarFiltro()">
+
+            <label class="btn btn-outline-info" for="cloud">
+                ☁️ Cloud
+            </label>
+
+        </div>
+
+        <!-- BOTÓN FUERA DEL BTN-GROUP -->
+        <div class="ms-4" style="padding-left: 368px">
+            <a th:href="@{/download}"
+               class="botonDescargar btn btn-outline-dark">
+                📥 Descargar JSON
+            </a>
+        </div>
+
+    </div>
+
+</div>
 
     <table class="table" th:if="${!#lists.isEmpty(consultas)}">
+
+
 
     <thead>
     <tr>
@@ -185,9 +258,63 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
-<script th:if="${categoria != null}">
-    const modal = new bootstrap.Modal(document.getElementById('resultadoModal'));
-    modal.show();
+<script th:if="${categoria != null and !categoriaDesconocida}">
+    const modalElement = document.getElementById('resultadoModal');
+
+    if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+    }
+</script>
+
+
+</script>
+
+<script>
+    function aplicarFiltro() {
+
+        const frontend = document.getElementById("frontend").checked;
+        const backend = document.getElementById("backend").checked;
+        const data = document.getElementById("data").checked;
+        const cloud = document.getElementById("cloud").checked;
+
+        const filas = document.querySelectorAll("tbody tr");
+
+        filas.forEach(fila => {
+
+            const categoria =
+                fila.querySelector("td:nth-child(3)").textContent.trim();
+
+            let mostrar = false;
+
+            // Si no hay ningún filtro seleccionado,
+            // mostramos todas las filas
+            if (!frontend && !backend && !data && !cloud) {
+                mostrar = true;
+            }
+
+            // Frontend seleccionado
+            if (frontend && categoria === "Frontend") {
+                mostrar = true;
+            }
+
+            // Backend seleccionado
+            if (backend && categoria === "Backend") {
+                mostrar = true;
+            }
+
+            if (data && categoria === "Data") {
+                mostrar = true;
+            }
+            if (cloud && categoria === "Cloud") {
+                mostrar = true;
+            }
+
+
+
+            fila.style.display = mostrar ? "" : "none";
+        });
+    }
 </script>
     </div>
 </body>

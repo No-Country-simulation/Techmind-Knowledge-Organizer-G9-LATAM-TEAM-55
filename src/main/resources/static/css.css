@@ -307,4 +307,19 @@ button:active{
 
 }
 
+.btn-group{
+    display: flex;
+    padding: 14px;
+    width: 40%;
+    justify-content: center;
+}
+.botonDescargar{
+    padding: 25px;
+    display: flex;
+    height: 76px;
+
+}
+
+
+
 
